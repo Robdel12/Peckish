@@ -10,45 +10,64 @@ import {
   StyleSheet
 } from 'react-native';
 
+import {
+  MKSpinner,
+  MKTextField,
+  MKColor,
+  getTheme
+} from 'react-native-material-kit';
+const theme = getTheme();
+
 class Home extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      ingredientsInput: '',
       isLoading: false
     };
   }
 
-  searchPressed() {
+  recipeCard(recipe) {
+    return (
+      <View style={[theme.cardStyle, {flex: 0.8}]} key={recipe.id}>
+        <Image source={{uri : recipe.image}} style={theme.cardImageStyle} />
+        <Text style={theme.cardTitleStyle}>{recipe.title}</Text>
+        <Text style={theme.cardContentStyle}>
+          {recipe.title}
+        </Text>
+        <Text style={theme.cardActionStyle}>My Action</Text>
+      </View>
+    );
+  }
+
+  startSearch() {
     this.setState({ isLoading: true });
     this.props.fetchRecipes(this.state.ingredientsInput).then(() => {
       this.setState({ isLoading: false });
     });
   }
 
+  setIngredientsInputValue(ingredientsInput) {
+    this.setState({ingredientsInput});
+  }
+
   render() {
     return (
       <View style={styles.scene}>
         <View style={styles.searchSection}>
-          <TextInput style={styles.searchInput}
-            returnKeyType="search"
+          <MKTextField
+            textInputStyle={{color: MKColor.Orange}}
             placeholder="Ingredients (comma delimited)"
-            onChangeText={(ingredientsInput) => this.setState({ingredientsInput})}
-            onSubmitEditing={() => { this.searchPressed() }}
+            onChangeText={(ingredientsInput) => this.setIngredientsInputValue(ingredientsInput)}
+            onSubmitEditing={() => { this.startSearch() }}
             value={this.state.ingredientsInput}
           />
         </View>
         <ScrollView style={styles.scrollSection}>
           {!this.state.isLoading && this.props.searchedRecipes.length && this.props.searchedRecipes.map(recipe => {
-            return (
-              <View key={recipe.id}>
-                <Image source={{uri: recipe.image}} style={styles.resultImage} />
-                <Text style={styles.resultText}>{recipe.title}</Text>
-              </View>
-            );
+            return this.recipeCard(recipe);
           })}
-          {this.state.isLoading ? <Text>Loading...</Text> : null}
+          {this.state.isLoading ? <MKSpinner style={styles.loadingSpinner} /> : null}
         </ScrollView>
       </View>
     );
@@ -60,18 +79,17 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20
   },
-  searchSection: {
-    height: 30,
-    flexDirection: 'row',
-    borderBottomColor: '#000',
-    borderBottomWidth: 1,
-    padding: 5
-  },
   searchInput: {
-    flex: 1,
+    padding: 5
   },
   scrollSection: {
     flex: 0.8
+  },
+  loadingSpinner: {
+    height: 60,
+    width: 60,
+    marginTop: 100,
+    alignSelf: 'center'
   },
   resultImage: {
     height: 200
