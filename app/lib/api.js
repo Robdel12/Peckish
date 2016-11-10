@@ -1,3 +1,5 @@
+import { API_KEY } from './env';
+
 class Api {
   static headers() {
     return {
@@ -5,8 +7,7 @@ class Api {
       'Content-Type': 'application/json',
       'dataType': 'json',
       'X-Requested-With': 'XMLHttpRequest',
-      'X-Mashape-Key': '94LpEfF3iAmsh8jP95UsQqKVko92p1e2uetjsnqzcR5kifnhVj',
-
+      'X-Mashape-Key': API_KEY
     }
   }
 

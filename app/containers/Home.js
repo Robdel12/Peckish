@@ -35,7 +35,6 @@ class Home extends Component {
         <Text style={theme.cardContentStyle}>
           {recipe.title}
         </Text>
-        <Text style={theme.cardActionStyle}>My Action</Text>
       </View>
     );
   }
