@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// import debounce from 'lodash.debounce';
 import {
   ScrollView,
-  View,
   Text,
-  TextInput,
   Image,
-  TouchableHighlight,
   StyleSheet,
 } from 'react-native';
 
 import {
-  MKSpinner,
-  MKTextField,
-  MKColor,
-  getTheme
-} from 'react-native-material-kit';
+  Container,
+  Header,
+  Title,
+  Content,
+  Card,
+  CardItem,
+  Thumbnail,
+  InputGroup,
+  Input,
+  Icon,
+  Spinner,
+} from 'native-base';
 
-const theme = getTheme();
 
 class Home extends Component {
   constructor(props) {
@@ -30,12 +34,17 @@ class Home extends Component {
 
   recipeCard(recipe) {
     return (
-      <View style={[theme.cardStyle, {flex: 0.8}]} key={recipe.id}>
-        <Image source={{uri : recipe.image}} style={theme.cardImageStyle} />
-        <Text style={theme.cardContentStyle}>
-          {recipe.title}
-        </Text>
-      </View>
+      <Card style={styles.cardContainer} key={recipe.id}>
+        <CardItem>
+          <Text>{recipe.title}</Text>
+        </CardItem>
+        <CardItem>
+          <Image style={{ resizeMode: 'cover' }} source={{uri: recipe.image}} />
+        </CardItem>
+        <CardItem>
+          <Text>See Recipe</Text>
+        </CardItem>
+     </Card>
     );
   }
 
@@ -50,73 +59,38 @@ class Home extends Component {
     this.setState({ingredientsInput});
   }
 
+  onValueChange() {
+
+  }
+
   render() {
     return (
-      <View style={styles.scene}>
-        <View style={styles.statsBarColor}></View>
-        <View style={styles.menubar}>
-          <Text style={styles.menubarText}>Peckish</Text>
-        </View>
-        <View style={styles.searchSection}>
-          <MKTextField
-            textInputStyle={{color: MKColor.Blue, flex: 0.2}}
-            placeholder="Ingredients (comma delimited)"
-            onChangeText={(ingredientsInput) => this.setIngredientsInputValue(ingredientsInput)}
-            onSubmitEditing={() => { this.startSearch() }}
-            value={this.state.ingredientsInput}
-            underlineSize={4}
-          />
-        </View>
-        <ScrollView style={styles.scrollSection}>
+      <Container>
+        <Header>
+          <Title>Peckish</Title>
+        </Header>
+        <Content>
+          <InputGroup>
+            <Icon name='ios-search' style={{color:'#00C497'}}/>
+            <Input placeholder='bacon, cheese, eggs'
+              onChangeText={(inputValue) => { this.setIngredientsInputValue(inputValue) }}
+              onSubmitEditing={() => { this.startSearch() }}
+              value={this.state.ingredientsInput}
+            />
+          </InputGroup>
           {!this.state.isLoading && this.props.searchedRecipes.length && this.props.searchedRecipes.map(recipe => {
             return this.recipeCard(recipe);
           })}
-          {this.state.isLoading ? <MKSpinner style={styles.loadingSpinner} /> : null}
-        </ScrollView>
-      </View>
+          {this.state.isLoading ? <Spinner style={styles.loadingSpinner} color="#00C497" /> : null}
+        </Content>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  statsBarColor: {
-    backgroundColor: '#0db9ec',
-    height: 15
-  },
-  scene: {
-    flex: 1,
-    backgroundColor: '#f5fcff'
-  },
-  searchSection: {
-    flex: 0.2
-  },
-  menubar: {
-    backgroundColor: '#0db9ec',
-    height: 50,
-    justifyContent: 'center'
-  },
-  menubarText: {
-    color: 'white',
-    fontSize: 30,
-    alignSelf: 'center',
-    fontFamily: 'Arial'
-  },
-  scrollSection: {
-    flex: 0.8
-  },
-  loadingSpinner: {
-    height: 60,
-    width: 60,
-    marginTop: 100,
-    alignSelf: 'center'
-  },
-  resultImage: {
-    height: 200
-  },
-  resultText: {
-    backgroundColor: 'black',
-    color: 'white',
-    height: 30,
+  cardContainer: {
+    margin: 10
   }
 });
 

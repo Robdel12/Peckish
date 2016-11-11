@@ -13,7 +13,7 @@ export function fetchRecipes(ingredients) {
       `ingredients=${encodeURIComponent(ingredients)}`,
       'fillIngredients=false',
       'limitLicense=false',
-      'number=5',
+      'number=25',
       'ranking=1'
     ].join('&');
 
