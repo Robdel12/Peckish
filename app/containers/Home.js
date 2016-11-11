@@ -7,7 +7,7 @@ import {
   TextInput,
   Image,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 
 import {
@@ -16,6 +16,7 @@ import {
   MKColor,
   getTheme
 } from 'react-native-material-kit';
+
 const theme = getTheme();
 
 class Home extends Component {
@@ -31,7 +32,6 @@ class Home extends Component {
     return (
       <View style={[theme.cardStyle, {flex: 0.8}]} key={recipe.id}>
         <Image source={{uri : recipe.image}} style={theme.cardImageStyle} />
-        <Text style={theme.cardTitleStyle}>{recipe.title}</Text>
         <Text style={theme.cardContentStyle}>
           {recipe.title}
         </Text>
@@ -53,13 +53,18 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.scene}>
+        <View style={styles.statsBarColor}></View>
+        <View style={styles.menubar}>
+          <Text style={styles.menubarText}>Peckish</Text>
+        </View>
         <View style={styles.searchSection}>
           <MKTextField
-            textInputStyle={{color: MKColor.Orange}}
+            textInputStyle={{color: MKColor.Blue, flex: 0.2}}
             placeholder="Ingredients (comma delimited)"
             onChangeText={(ingredientsInput) => this.setIngredientsInputValue(ingredientsInput)}
             onSubmitEditing={() => { this.startSearch() }}
             value={this.state.ingredientsInput}
+            underlineSize={4}
           />
         </View>
         <ScrollView style={styles.scrollSection}>
@@ -74,12 +79,27 @@ class Home extends Component {
 }
 
 const styles = StyleSheet.create({
+  statsBarColor: {
+    backgroundColor: '#0db9ec',
+    height: 15
+  },
   scene: {
     flex: 1,
-    marginTop: 20
+    backgroundColor: '#f5fcff'
   },
-  searchInput: {
-    padding: 5
+  searchSection: {
+    flex: 0.2
+  },
+  menubar: {
+    backgroundColor: '#0db9ec',
+    height: 50,
+    justifyContent: 'center'
+  },
+  menubarText: {
+    color: 'white',
+    fontSize: 30,
+    alignSelf: 'center',
+    fontFamily: 'Arial'
   },
   scrollSection: {
     flex: 0.8
