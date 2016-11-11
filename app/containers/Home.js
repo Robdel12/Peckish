@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import debounce from 'lodash.debounce';
 import {
-  ScrollView,
   Text,
   Image,
   StyleSheet,
@@ -57,10 +55,6 @@ class Home extends Component {
 
   setIngredientsInputValue(ingredientsInput) {
     this.setState({ingredientsInput});
-  }
-
-  onValueChange() {
-
   }
 
   render() {
